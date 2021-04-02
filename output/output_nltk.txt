@@ -1,0 +1,6 @@
+Sentence: The efficiency we have at removing trash has made creating trash more acceptable.
+
+[('The', 'DT'), ('efficiency', 'NN'), ('we', 'PRP'), ('have', 'VBP'), ('at', 'IN'), ('removing', 'VBG'), ('trash', 'NN'), ('has', 'VBZ'), ('made', 'VBN'), ('creating', 'VBG'), ('trash', 'NN'), ('more', 'RBR'), ('acceptable', 'JJ'), ('.', '.')]
+
+To understand this output, please refer to a table similar to the one here:
+https://www.guru99.com/pos-tagging-chunking-nltk.html

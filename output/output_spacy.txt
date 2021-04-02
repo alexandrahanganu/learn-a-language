@@ -1,0 +1,5 @@
+Sentence: The efficiency we have at removing trash has made creating trash more acceptable.
+
+spaCy pos_:  ['DET', 'NOUN', 'PRON', 'VERB', 'ADP', 'VERB', 'NOUN', 'AUX', 'VERB', 'VERB', 'NOUN', 'ADV', 'ADJ', 'PUNCT']
+spaCy tag_:  ['DT', 'NN', 'PRP', 'VBP', 'IN', 'VBG', 'NN', 'VBZ', 'VBN', 'VBG', 'NN', 'RBR', 'JJ', '.']
+spaCy explain tag_:  ['determiner', 'noun, singular or mass', 'pronoun, personal', 'verb, non-3rd person singular present', 'conjunction, subordinating or preposition', 'verb, gerund or present participle', 'noun, singular or mass', 'verb, 3rd person singular present', 'verb, past participle', 'verb, gerund or present participle', 'noun, singular or mass', 'adverb, comparative', 'adjective', 'punctuation mark, sentence closer']
