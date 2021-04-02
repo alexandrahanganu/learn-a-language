@@ -1,0 +1,2 @@
+For spaCy to work correctly, first install it and then run the following command in the terminal:
+python -m spacy download en_core_web_sm
