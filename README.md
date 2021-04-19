@@ -46,7 +46,7 @@ Accepts as input raw text and checks if all sentences are parse-able by the avai
 
 converted to (CLIPS): 
 
--(sentence NN NN , NNP VBD RB JJ .)
+- (sentence NN NN , NNP VBD RB JJ .)
 
 ### Third step: parsing the input sentences
 - If all input sentences are parsed by your grammar, output a confirming message. Otherwise output the sentences which are not parsed and the number of parsed sentences and total number of sentences.
