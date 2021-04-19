@@ -8,6 +8,7 @@ Implement a system able to learn a grammar for a natural language.
 
 ## First step: Add morpho-syntactic markups to that text. 
 - Example output (NLTK):
+- [('Today', 'NN'), ('morning', 'NN'), (',', ','), ('Arthur', 'NNP'), ('felt', 'VBD'), ('very', 'RB'), ('good', 'JJ'), ('.', '.')]
 
 
 ## Second step: Convert the markups to CLIPS or PROLOG facts 
@@ -16,3 +17,5 @@ Implement a system able to learn a grammar for a natural language.
 converted to (CLIPS): =>
 
 - (sentence NN NN , NNP VBD RB JJ .)
+
+## Third step: learning or updating a grammar
