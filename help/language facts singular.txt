@@ -1,0 +1,60 @@
+(deffacts facts
+        (waiting_input)
+        (answer)
+        (rule G1  S NN A1)
+        (rule G2  A1 , B1)
+        (rule G3  B1 NNP C1)
+        (rule G4  C1 VBD D1)
+        (rule G5  D1 RB E1)
+	(rule G7  E1 . EPS)
+    	(rule G7  S VB A2)
+    	(rule G8  A2 NN B2)
+	(rule G20 B2 . EPS)
+	(rule G10 S CV A3)
+	(rule G11 A3 ALTC B3)
+	(rule g12 B3 . EPS)
+	(rule G18 S FIRAR A4)
+	(rule G19 A4 . EPS)
+)
+
+
+(defrule read_input
+        ?a <- (waiting_input)
+        =>
+        (printout t "Insert sentence: " crlf)
+        (assert (text S (explode$ (readline))))
+        (retract ?a)
+)
+
+(defrule apply_rule
+        (rule ?g ?nonterminal ?first ?next)
+        ?a <- (text ?nonterminal ?first $?rest)
+        ?b <- (answer $?steps)
+        =>
+        (assert (text ?next $?rest))
+        (assert (answer $?steps ?g))
+        (printout t $?steps crlf)
+        (printout t $?steps $?nonterminal $?first $?next crlf)
+        (printout t $?steps $?nonterminal $?first $?rest crlf)
+        (printout t $?g crlf)
+        (printout t crlf)
+        (retract ?a)
+        (retract ?b)
+)
+
+(defrule success
+        ?a <- (text EPS)
+        (answer $?steps)
+        =>
+        (printout t "YES" $?steps crlf)
+
+        (retract ?a)
+)
+
+(defrule failure
+        ?a <- (text $?)
+        =>
+        (printout t "NO" crlf)
+
+        (retract ?a)
+)

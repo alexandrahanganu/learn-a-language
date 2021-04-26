@@ -1,0 +1,40 @@
+(defrule read_input
+        ?a <- (waiting_input)
+        =>
+        (printout t "Insert sentence: " crlf)
+        (assert (text S (explode$ (readline))))
+        (retract ?a)
+)
+
+(defrule apply_rule
+        (rule ?g ?nonterminal ?first ?next)
+        ?a <- (text ?nonterminal ?first $?rest)
+        ?b <- (answer $?steps)
+        =>
+        (assert (text ?next $?rest))
+        (assert (answer $?steps ?g))
+        (printout t $?steps crlf)
+        (printout t $?steps $?nonterminal $?first $?next crlf)
+        (printout t $?steps $?nonterminal $?first $?rest crlf)
+        (printout t $?g crlf)
+        (printout t crlf)
+        (retract ?a)
+        (retract ?b)
+)
+
+(defrule success
+        ?a <- (text EPS)
+        (answer $?steps)
+        =>
+        (printout t "YES" $?steps crlf)
+
+        (retract ?a)
+)
+
+(defrule failure
+        ?a <- (text $?)
+        =>
+        (printout t "NO" crlf)
+
+        (retract ?a)
+)
