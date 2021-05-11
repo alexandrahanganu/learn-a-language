@@ -54,18 +54,24 @@ def singularFacts():
 
 def multipleFacts():
     facts = "(deffacts facts\n\t\t(waiting_input)\n\t\t(answer)\n\t\t"
-    index = 1
+    ruleIndex = 1
     phraseIndex = 1
+    nonTerminalIndex = 1
     for i in range(0, len(tags)):
-        print(i, len(tags), tags[i])
         facts += "(rule G"
-        facts += str(index)
+        facts += str(ruleIndex)
         facts += " "
         if (i == 0):
             facts += "S"
+            print(" primul if ")
+        elif tags[i-1] == "." and i-1>=0:
+            facts += "S"
+            nonTerminalIndex = 1
+            print(" primul elif ")
         else:
-            facts += ascii_letters[ascii_letters.index('A') + index - 2]
+            facts += ascii_letters[ascii_letters.index('A') + nonTerminalIndex - 2]
             facts += str(phraseIndex)
+            print(" primul else ")
         facts += " "
         facts += tags[i]
         facts += " "
@@ -74,21 +80,19 @@ def multipleFacts():
             facts += ")"
             facts += "\n\t\t"
             phraseIndex += 1
+            print(" al doilea if ")
         elif i == len(tags) - 1:
             facts += "EPS"
             facts += ")"
-        elif tags[i-1] == ".":
-            facts += "S "
-            facts += tags[i]
-            facts += " "
-            facts += ascii_letters[ascii_letters.index('A') + index - 1]
-            facts += "\n\t\t"
+            print(" al doilea elif ")
         else:
-            facts += ascii_letters[ascii_letters.index('A') + index - 1]
+            facts += ascii_letters[ascii_letters.index('A') + nonTerminalIndex - 1]
             facts += str(phraseIndex)
             facts += ")"
             facts += "\n\t\t"
-        index += 1
+            print(" al doilea else ")
+        nonTerminalIndex += 1
+        ruleIndex += 1
     facts += "\n)"
     return facts
 
