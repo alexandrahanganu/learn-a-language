@@ -23,17 +23,93 @@ def tag_text(file):
     return tag
 
 
+def singularFacts():
+    facts = "(deffacts facts\n\t\t(waiting_input)\n\t\t(answer)\n\t\t"
+    index = 1
+    phraseIndex = 1
+    for i in range(0, len(tags)):
+        facts += "(rule G"
+        facts += str(index)
+        facts += " "
+        if (i == 0):
+            facts += "S"
+        else:
+            facts += ascii_letters[ascii_letters.index('A') + index - 2]
+            facts += str(phraseIndex)
+        facts += " "
+        facts += tags[i]
+        facts += " "
+        if (i < len(tags) - 1):
+            facts += ascii_letters[ascii_letters.index('A') + index - 1]
+            facts += str(phraseIndex)
+            facts += ")"
+            facts += "\n\t\t"
+        else:
+            facts += "EPS"
+            facts += ")"
+        index += 1
+    facts += "\n)"
+    return facts
+
+
+def multipleFacts():
+    facts = "(deffacts facts\n\t\t(waiting_input)\n\t\t(answer)\n\t\t"
+    index = 1
+    phraseIndex = 1
+    for i in range(0, len(tags)):
+        print(i, len(tags), tags[i])
+        facts += "(rule G"
+        facts += str(index)
+        facts += " "
+        if (i == 0):
+            facts += "S"
+        else:
+            facts += ascii_letters[ascii_letters.index('A') + index - 2]
+            facts += str(phraseIndex)
+        facts += " "
+        facts += tags[i]
+        facts += " "
+        if i < len(tags) - 1 and tags[i] == ".":
+            facts += "S"
+            facts += ")"
+            facts += "\n\t\t"
+            phraseIndex += 1
+        elif i == len(tags) - 1:
+            facts += "EPS"
+            facts += ")"
+        elif tags[i-1] == ".":
+            facts += "S "
+            facts += tags[i]
+            facts += " "
+            facts += ascii_letters[ascii_letters.index('A') + index - 1]
+            facts += "\n\t\t"
+        else:
+            facts += ascii_letters[ascii_letters.index('A') + index - 1]
+            facts += str(phraseIndex)
+            facts += ")"
+            facts += "\n\t\t"
+        index += 1
+    facts += "\n)"
+    return facts
+
+
 import os
+from string import ascii_letters
 if __name__ == '__main__':
     text = input("Introduceti textul:")
     file = tokenize_text(text)
     tags = tag_text(file)
-    #tokenize_text()
-    #print(tag_text(tokenize_text()))
     print("tagurile propozitiei", tags)
-    os.system(r'"D:/CLIPS/CLIPSWin.exe"') #aici aveti clips-ul instalat
     some_text = read_file("C:/Users/Theo/PycharmProjects/Pbr Project/help/aux_file.txt") #path-ul fisierului aux_file (e in folderul help)
-    print(some_text)
+    #singularFacts = singularFacts()
+    #print(singularFacts)
+    multipleFacts = multipleFacts()
+    print(multipleFacts)
+    #os.system(r'"D:/CLIPS/CLIPSWin.exe"') #aici path-ul catre clips
+    #print(some_text)
+
+
+
     # intreaba la inceput cate propozitii vrea sa citeasca
     # daca una, atunci o sa citeasca dintr-un anumit fisier cu reguli singulare
     # daca mai multe din celalalt
