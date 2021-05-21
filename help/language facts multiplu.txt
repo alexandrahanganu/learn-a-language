@@ -1,3 +1,8 @@
+(defglobal ?*propozitiiNeparsate* = 0)
+(defglobal ?*propozitiiParsate* = 0)
+(defglobal ?*totalPropozitii* = 0)
+(defglobal ?*propozitiaCurenta* = "")
+
 (deffacts facts
         (waiting_input)
         (answer)
@@ -12,17 +17,20 @@
 	(rule G20 B2 . S)
 	(rule G10 S CV A3)
 	(rule G11 A3 ALTC B3)
-	(rule g12 B3 . EPS)
+	(rule g12 B3 . S)
 	(rule G18 S FIRAR A4)
-	(rule G19 A4 . EPS)
+	(rule G19 A4 . S)
 )
 
 
 (defrule read_input
         ?a <- (waiting_input)
         =>
-        (printout t "Insert sentence: " crlf)
-        (assert (text S (explode$ (readline))))
+        (close fisierPropozitiiNeparsate)
+        (open "C:\\Users\\salav\\Desktop\\Anul 3\\Sem2\\PBR\\input.dat" data "r")
+        (assert (text S (explode$ (readline data))))
+        (close data)
+        (open "C:\\Users\\salav\\Desktop\\Anul 3\\Sem2\\PBR\\propozitiiNeparsate.dat" fisierPropozitiiNeparsate "w")
         (retract ?a)
 )
 
@@ -31,30 +39,74 @@
         ?a <- (text ?nonterminal ?first $?rest)
         ?b <- (answer $?steps)
         =>
+        ;if ?next == 'S' atunci nr prop parsate creste, nr prop totale creste
+        (if (eq ?next S)
+        then 
+                (bind ?*propozitiiParsate* (+ ?*propozitiiParsate* 1))
+                (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first))
+                (printout fisierPropozitiiNeparsate "Propozitie parsata in intregime: " ?*propozitiaCurenta* crlf )
+                (bind ?*propozitiaCurenta* "")
+
+        )
+
+        ;cand se termina intr o prop parsabila treb sa afisez contorii
+        (if (eq (length $?rest) 0)
+                then
+                (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor: " ?*totalPropozitii* crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor parsate: " ?*propozitiiParsate* crlf)
+        (close fisierPropozitiiNeparsate)
+        )
+        (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first " "))
         (assert (text ?next $?rest))
         (assert (answer $?steps ?g))
-        (printout t $?steps crlf)
-        (printout t $?steps $?nonterminal $?first $?next crlf)
-        (printout t $?steps $?nonterminal $?first $?rest crlf)
-        (printout t $?g crlf)
-        (printout t crlf)
         (retract ?a)
         (retract ?b)
 )
+
+; propozitiile care nu pot fi parsate incep sa se consume daca incep in modul in care gramatica permite
+; de aceea, in fisier, pot fi afisate incomplet
+; de exemplu daca gramatica permite propozitia NN NNP , VBD .
+; iar prop neparsabila e NN NNP , NNP VBD . 
+; atunci in fisier e f posibil sa avem A3 NNP VBD . 
+; ce poate fi parsat, e consumat, ce nu, e afisat
+; cred ca fiecare prop curenta, care e parsata, trebuie salvata intr o variabila ca sa o putem afisa integral dak e cazul
+
+;pentru inputul
+;NN , NNP VBD RB . NN , NNP VBD RB . VB JJ IN DT NN NN . RB PRP VBD RB VB JJ IN , DT . JJ NN RB PRP , VBD , RB , VB IN DT JJ .
+;avem in fisierul de prop neparsate:
+;(A2 JJ IN DT NN NN)(S RB PRP VBD RB VB JJ IN , DT)
+;incepe cu A2 fiinda avem regula (rule G7  S VB A2) si VB a fost consumat
 
 (defrule success
         ?a <- (text EPS)
         (answer $?steps)
         =>
-        (printout t "YES" $?steps crlf)
-
         (retract ?a)
 )
 
 (defrule failure
-        ?a <- (text $?)
+        ?a <- (text ?simb $?cevaPropozitieNeparsata . $?restulPropozitiilor)
         =>
-        (printout t "NO" crlf)
+        ;imi salvez doar restul de propozitii de dupa .
+        ;nr prop totale creste, nr prop neparsate creste
+        (bind ?*propozitiiNeparsate* (+ ?*propozitiiNeparsate* 1))
+        (if (eq (length $?restulPropozitiilor) 0)
+        then
+        ;inchid fisierul in care am scris prop neparsate
+        (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+        (printout fisierPropozitiiNeparsate "Propozitie neparsata : " ?*propozitiaCurenta* $?cevaPropozitieNeparsata crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor: " ?*totalPropozitii* crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor parsate: " ?*propozitiiParsate* crlf)
+        (close fisierPropozitiiNeparsate)
+        else
+        ;scriu propozitia neparsata in fisier
+        
+        ;(bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* $?cevaPropozitieNeparsata ))
+        (printout fisierPropozitiiNeparsate "Propozitie neparsata : " ?*propozitiaCurenta* $?cevaPropozitieNeparsata crlf )
+        (bind ?*propozitiaCurenta* "")
+        )
+        (assert (text S $?restulPropozitiilor))
 
         (retract ?a)
 )
