@@ -96,7 +96,6 @@ def multipleFacts():
     return facts
 
 
-import os
 from string import ascii_letters
 if __name__ == '__main__':
     text = input("Introduceti textul:")

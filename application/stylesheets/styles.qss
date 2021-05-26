@@ -10,6 +10,20 @@ QLabel
     border-image: none;
 }
 
+QRadioButton
+{
+    font-family: Comfortaa;
+    font-size: 20px;
+    border-image: none;
+}
+
+QCheckBox
+{
+    font-family: Comfortaa;
+    font-size: 20px;
+    border-image: none;
+}
+
 QPushButton
 {
     font-family: Montserrat;
