@@ -1,0 +1,105 @@
+(defglobal ?*propozitiiNeparsate* = 0)
+(defglobal ?*propozitiiParsate* = 0)
+(defglobal ?*totalPropozitii* = 0)
+(defglobal ?*propozitiaCurenta* = "")
+(defglobal ?*nrFacts* = 0)
+
+(deffacts facts
+        (waiting_input)
+        (answer)
+        (rule G1  S NN A1)
+        (rule G2  A1 , B1)
+        (rule G3  B1 NNP C1)
+        (rule G4  C1 VBD D1)
+        (rule G5  D1 RB E1)
+	(rule G7  E1 . S)
+    	(rule G7  S VB A2)
+    	(rule G8  A2 NN E1)
+	(rule G10 S CV A3)
+	(rule G11 A3 ALTC E1)
+	(rule G18 S FIRAR E1)
+)
+
+
+(defrule read_input
+        ?a <- (waiting_input)
+        =>
+        (close fisierPropozitiiNeparsate)
+        (open "C:\\Users\\salav\\Desktop\\Anul 3\\Sem2\\PBR\\input.dat" data "r")
+        (assert (text S (explode$ (readline data))))
+        (close data)
+        (open "C:\\Users\\salav\\Desktop\\Anul 3\\Sem2\\PBR\\propozitiiNeparsate.dat" fisierPropozitiiNeparsate "w")
+        (retract ?a)
+)
+
+(defrule apply_rule
+        (rule ?g ?nonterminal ?first ?next)
+        ?a <- (text ?nonterminal ?first $?rest)
+        ?b <- (answer $?steps)
+        =>
+        ;if ?next == 'S' atunci nr prop parsate creste, nr prop totale creste
+        (if (eq ?next S)
+        then 
+                (bind ?*propozitiiParsate* (+ ?*propozitiiParsate* 1))
+                (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first))
+                (printout fisierPropozitiiNeparsate "Propozitie parsata in intregime: " ?*propozitiaCurenta* crlf )
+                (bind ?*propozitiaCurenta* "")
+
+        )
+
+        ;cand se termina intr o prop parsabila treb sa afisez contorii
+        (if (eq (length $?rest) 0)
+                then
+                (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor: " ?*totalPropozitii* crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor parsate: " ?*propozitiiParsate* crlf)
+        (close fisierPropozitiiNeparsate)
+        )
+        (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first " "))
+        (assert (text ?next $?rest))
+        (assert (answer $?steps ?g))
+        (retract ?a)
+        (retract ?b)
+)
+
+(defrule success
+        ?a <- (text EPS)
+        (answer $?steps)
+        =>
+        (retract ?a)
+)
+
+(defrule failure
+        ?a <- (text ?simb $?cevaPropozitieNeparsata . $?restulPropozitiilor)
+        =>
+        
+        (assert (newfacts ?simb ?cevaPropozitieNeparsata))
+        
+
+        ;nu o sa mai fie ok
+        (assert (text S $?restulPropozitiilor))
+
+        (retract ?a)
+)
+
+(defrule newFacts
+        ?a <- (newfacts ?simbolInceput ?simbolNeparsat $?cevaPropozitieNeparsata)
+        =>
+
+        (printout fisierPropozitiiNeparsate "Propozitie parsata in intregime: " ?*propozitiaCurenta* crlf )
+
+        (if (eq (length $?cevaPropozitieNeparsata) 0)
+        then
+        (bind ?*nrFacts* (length$ (get-fact-list)))
+        (assert (rule ?*nrFacts* ?simbolInceput ?simbolNeparsat E1 ))
+        
+        ;(bind ?*nrFacts* (length$ (get-fact-list)))
+        ;(assert (rule ?*nrFacts* ?*nrFacts*  . S))
+
+        else
+        (bind ?*nrFacts* (length$ (get-fact-list)))
+        (assert (rule ?*nrFacts* ?simbolInceput ?simbolNeparsat (+ ?*nrFacts* 1)))
+        (assert (newfacts (+ ?*nrFacts* 1) ?cevaPropozitieNeparsata)))
+
+        (retract ?a)
+)
