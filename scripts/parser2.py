@@ -18,7 +18,6 @@ def tag_text(file):
     tag = []
     exp = []
     for i in range(0, len(file)):
-        print(file[i].pos_)
         pos.append(file[i].pos_)
         tag.append(file[i].tag_)
         exp.append(spacy.explain(file[i].tag_))
