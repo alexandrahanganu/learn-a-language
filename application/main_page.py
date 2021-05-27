@@ -12,7 +12,7 @@ class MainPage(PageWindow):
         self.setupUi()
 
     def setupUi(self):
-        self.setWindowTitle("Learn a New Language")
+        self.setWindowTitle("Learn a Language")
 
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setAutoFillBackground(False)
@@ -26,7 +26,7 @@ class MainPage(PageWindow):
         self.frame.setObjectName("frame")
 
         self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(100, 310, 600, 180))
+        self.label.setGeometry(QtCore.QRect(50, 310, 700, 150))
         self.label.setStyleSheet("QLabel{background-image: url(./images/image.png) 0 0 0 0 stretch stretch;}")
         self.label.setObjectName("label")
 

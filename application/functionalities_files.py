@@ -15,7 +15,7 @@ class FunctionalitiesPage(PageWindow):
         self.setupUi()
 
     def setupUi(self):
-        self.setWindowTitle("Learn a New Language")
+        self.setWindowTitle("Learn a Language")
 
         self.shadow = QGraphicsDropShadowEffect()
         self.shadow.setBlurRadius(15)

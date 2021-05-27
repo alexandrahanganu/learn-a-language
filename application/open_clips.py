@@ -15,7 +15,7 @@ class ClipsPage(QWidget):
         self.setupUI()
 
     def setupUI(self):
-        self.setWindowTitle("Learn a New Language")
+        self.setWindowTitle("Learn a Language")
 
         self.VBL = QVBoxLayout(self)
 
