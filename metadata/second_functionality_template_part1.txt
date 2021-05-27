@@ -1,0 +1,4 @@
+(defglobal ?*propozitiiNeparsate* = 0)
+(defglobal ?*propozitiiParsate* = 0)
+(defglobal ?*totalPropozitii* = 0)
+(defglobal ?*propozitiaCurenta* = "")

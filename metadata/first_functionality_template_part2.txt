@@ -1,0 +1,73 @@
+(defrule read_input
+        ?a <- (waiting_input)
+        =>
+        (close fisierPropozitiiNeparsate)
+        (open "input_path" data "r")
+        (assert (text S (explode$ (readline data))))
+        (close data)
+        (open "output_path" fisierPropozitiiNeparsate "w")
+        (retract ?a)
+)
+
+(defrule apply_rule
+        (rule ?g ?nonterminal ?first ?next)
+        ?a <- (text ?nonterminal ?first $?rest)
+        ?b <- (answer $?steps)
+        =>
+        (if (eq ?next S)
+        then
+                (bind ?*propozitiiParsate* (+ ?*propozitiiParsate* 1))
+                (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first))
+                (bind ?*propozitiaCurenta* "")
+
+        )
+
+        (if (eq (length $?rest) 0)
+                then
+                (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+
+        (close fisierPropozitiiNeparsate)
+        )
+        (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first " "))
+        (assert (text ?next $?rest))
+        (assert (answer $?steps ?g))
+        (retract ?a)
+        (retract ?b)
+)
+
+(defrule success
+        ?a <- (text EPS)
+        (answer $?steps)
+        =>
+        (retract ?a)
+)
+
+(defrule failure
+        ?a <- (text ?simb $?cevaPropozitieNeparsata . $?restulPropozitiilor)
+        =>
+
+        (assert (newfacts ?simb ?cevaPropozitieNeparsata))
+
+        (assert (text S $?restulPropozitiilor))
+
+        (retract ?a)
+)
+
+(defrule newFacts
+        ?a <- (newfacts ?simbolInceput ?simbolNeparsat $?cevaPropozitieNeparsata)
+        =>
+
+        (if (eq (length $?cevaPropozitieNeparsata) 0)
+        then
+        (bind ?*nrFacts* (length$ (get-fact-list)))
+        (assert (rule ?*nrFacts* ?simbolInceput ?simbolNeparsat E1 ))
+        (printout fisierPropozitiiNeparsate "Noua regula adaugata: (rule "?*nrFacts* " " ?simbolInceput " " ?simbolNeparsat " E1)" crlf )
+        else
+        (bind ?*nrFacts* (length$ (get-fact-list)))
+        (assert (rule ?*nrFacts* ?simbolInceput ?simbolNeparsat (+ ?*nrFacts* 1)))
+        (printout fisierPropozitiiNeparsate "Noua regula adaugata: (rule "?*nrFacts* " " ?simbolInceput " " ?simbolNeparsat " " (+ ?*nrFacts* 1)")" crlf )
+        (assert (newfacts (+ ?*nrFacts* 1) ?cevaPropozitieNeparsata)))
+
+
+        (retract ?a)
+)

@@ -36,7 +36,8 @@ class ClipsPage(QWidget):
             self.padre.toggle_buttons(True)
             event.accept()
             self.Worker1.stop()
-            for process in (process for process in psutil.process_iter() if process.name() == "CLIPSIDE.exe"):
+            # for process in (process for process in psutil.process_iter() if process.name() == "CLIPSIDE.exe"):
+            for process in (process for process in psutil.process_iter() if process.name() == "CLIPSWin.exe"):
                 process.kill()
             self.close()
         else:
@@ -47,13 +48,14 @@ class ClipsPage(QWidget):
 class Worker1(QThread):
     def run(self):
         """
-        starts the thread which captures live feed and sends the data to the
+        starts the thread which captures live feed and sends the metadata to the
         algorithm for further analyzing
         """
         self.ThreadActive = True
 
         while self.ThreadActive:
-            os.system(r'"D:/School/CLIPS/CLIPSIDE.exe"')
+            os.system(r'"D:/School/CLIPSWindows/CLIPSWin.exe"')
+            # os.system(r'"D:/School/CLIPS/CLIPSIDE.exe"')
 
     def stop(self):
         """

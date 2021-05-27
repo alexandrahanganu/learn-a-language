@@ -6,6 +6,7 @@ from generate_files import GenerateFilesPage
 from about_page import AboutPage
 from controller import PageWindow
 from functionalities_files import FunctionalitiesPage
+from input_files import InputPage
 
 
 class Window(QtWidgets.QMainWindow, QWidget):
@@ -18,6 +19,7 @@ class Window(QtWidgets.QMainWindow, QWidget):
         self.register(MainPage(), "main")
         self.register(GenerateFilesPage(), "generate")
         self.register(FunctionalitiesPage(), "functionalities")
+        self.register(InputPage(), "input")
         self.register(AboutPage(), "about")
         self.goto("main")
         PageWindow.add_fonts(self)

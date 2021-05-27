@@ -1,0 +1,65 @@
+(defrule read_input
+        ?a <- (waiting_input)
+        =>
+        (close fisierPropozitiiNeparsate)
+        (open "input_path" data "r")
+        (assert (text S (explode$ (readline data))))
+        (close data)
+        (open "output_path" fisierPropozitiiNeparsate "w")
+        (retract ?a)
+)
+
+(defrule apply_rule
+        (rule ?g ?nonterminal ?first ?next)
+        ?a <- (text ?nonterminal ?first $?rest)
+        ?b <- (answer $?steps)
+        =>
+        (if (eq ?next S)
+        then
+                (bind ?*propozitiiParsate* (+ ?*propozitiiParsate* 1))
+                (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first))
+                (printout fisierPropozitiiNeparsate "Propozitie parsata in intregime: " ?*propozitiaCurenta* crlf )
+                (bind ?*propozitiaCurenta* "")
+
+        )
+
+        (if (eq (length $?rest) 0)
+                then
+                (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor: " ?*totalPropozitii* crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor parsate: " ?*propozitiiParsate* crlf)
+        (close fisierPropozitiiNeparsate)
+        )
+        (bind ?*propozitiaCurenta* (str-cat ?*propozitiaCurenta* ?first " "))
+        (assert (text ?next $?rest))
+        (assert (answer $?steps ?g))
+        (retract ?a)
+        (retract ?b)
+)
+
+
+(defrule success
+        ?a <- (text EPS)
+        (answer $?steps)
+        =>
+        (retract ?a)
+)
+
+(defrule failure
+        ?a <- (text ?simb $?cevaPropozitieNeparsata . $?restulPropozitiilor)
+        =>
+        (bind ?*propozitiiNeparsate* (+ ?*propozitiiNeparsate* 1))
+        (if (eq (length $?restulPropozitiilor) 0)
+        then
+        (bind ?*totalPropozitii* (+ ?*propozitiiNeparsate* ?*propozitiiParsate*))
+        (printout fisierPropozitiiNeparsate "Propozitie neparsata : " ?*propozitiaCurenta* $?cevaPropozitieNeparsata crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor: " ?*totalPropozitii* crlf )
+        (printout fisierPropozitiiNeparsate "Totalul propozitiilor parsate: " ?*propozitiiParsate* crlf)
+        (close fisierPropozitiiNeparsate)
+        else
+        (printout fisierPropozitiiNeparsate "Propozitie neparsata : " ?*propozitiaCurenta* $?cevaPropozitieNeparsata crlf )
+        (bind ?*propozitiaCurenta* "")
+        )
+        (assert (text S $?restulPropozitiilor))
+        (retract ?a)
+)

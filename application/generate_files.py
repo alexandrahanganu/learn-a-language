@@ -30,11 +30,11 @@ class GenerateFilesPage(PageWindow):
         self.frame.setObjectName("frame")
 
         self.functionalities_button = QtWidgets.QPushButton(self)
-        self.functionalities_button.setGeometry(QtCore.QRect(520, 140, 251, 151))
+        self.functionalities_button.setGeometry(QtCore.QRect(520, 330, 351, 151))
         self.functionalities_button.setObjectName("functionalities_button")
 
         self.input_button = QtWidgets.QPushButton(self)
-        self.input_button.setGeometry(QtCore.QRect(520, 330, 251, 151))
+        self.input_button.setGeometry(QtCore.QRect(520, 140, 351, 151))
         self.input_button.setObjectName("input_button")
 
         self.pushButton_1 = QtWidgets.QPushButton(self)

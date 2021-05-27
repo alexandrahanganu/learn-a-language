@@ -1,4 +1,6 @@
 import spacy
+
+
 def read_file(file_name):
     with open(file_name, "r") as fin:
         text = fin.read()
@@ -63,7 +65,7 @@ def multipleFacts():
         if (i == 0):
             facts += "S"
             print(" primul if ")
-        elif tags[i-1] == "." and i-1>=0:
+        elif tags[i - 1] == "." and i - 1 >= 0:
             facts += "S"
             nonTerminalIndex = 1
             print(" primul elif ")
@@ -97,20 +99,20 @@ def multipleFacts():
 
 
 from string import ascii_letters
+
 if __name__ == '__main__':
     text = input("Introduceti textul:")
     file = tokenize_text(text)
     tags = tag_text(file)
     print("tagurile propozitiei", tags)
-    some_text = read_file("C:/Users/Theo/PycharmProjects/Pbr Project/help/aux_file.txt") #path-ul fisierului aux_file (e in folderul help)
-    #singularFacts = singularFacts()
-    #print(singularFacts)
+    some_text = read_file(
+        "C:/Users/Theo/PycharmProjects/Pbr Project/help/aux_file.txt")  # path-ul fisierului aux_file (e in folderul help)
+    # singularFacts = singularFacts()
+    # print(singularFacts)
     multipleFacts = multipleFacts()
     print(multipleFacts)
-    #os.system(r'"D:/CLIPS/CLIPSWin.exe"') #aici path-ul catre clips
-    #print(some_text)
-
-
+    # os.system(r'"D:/CLIPS/CLIPSWin.exe"') #aici path-ul catre clips
+    # print(some_text)
 
     # intreaba la inceput cate propozitii vrea sa citeasca
     # daca una, atunci o sa citeasca dintr-un anumit fisier cu reguli singulare
