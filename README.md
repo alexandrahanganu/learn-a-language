@@ -2,6 +2,8 @@
 
 Implement a system able to learn a grammar for a natural language.
 
+### For the User Guide: documentation/Learn a Language - User Guide.pdf
+
 ## The system has two main functionalities:
 - Accepts as input raw text and uses it to learn or update a grammar.
 - Accepts as input raw text and checks if all sentences are parse-able by the available grammar.
@@ -50,3 +52,4 @@ converted to (CLIPS):
 
 ### Third step: parsing the input sentences
 - If all input sentences are parsed by your grammar, output a confirming message. Otherwise output the sentences which are not parsed and the number of parsed sentences and total number of sentences.
+

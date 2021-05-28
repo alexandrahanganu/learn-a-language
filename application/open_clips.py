@@ -53,8 +53,11 @@ class Worker1(QThread):
         """
         self.ThreadActive = True
 
+        with open("../metadata/clips_path.txt", "r") as fin:
+            path = fin.read()
+
         while self.ThreadActive:
-            os.system(r'"D:/School/CLIPSWindows/CLIPSWin.exe"')
+            os.system(path)
             # os.system(r'"D:/School/CLIPS/CLIPSIDE.exe"')
 
     def stop(self):

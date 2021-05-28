@@ -106,7 +106,7 @@ if __name__ == '__main__':
     tags = tag_text(file)
     print("tagurile propozitiei", tags)
     some_text = read_file(
-        "C:/Users/Theo/PycharmProjects/Pbr Project/help/aux_file.txt")  # path-ul fisierului aux_file (e in folderul help)
+        "C:/Users/Theo/PycharmProjects/Pbr Project/misc/aux_file.txt")  # path-ul fisierului aux_file (e in folderul misc)
     # singularFacts = singularFacts()
     # print(singularFacts)
     multipleFacts = multipleFacts()
