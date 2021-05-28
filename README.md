@@ -1,8 +1,8 @@
-# learn-a-language
+![LearnALanguage](https://github.com/alexandrahanganu/learn-a-language/blob/main/application/images/image.png?raw=true)
 
-Implement a system able to learn a grammar for a natural language.
+## Implement a system able to learn a grammar for a natural language.
 
-### For the User Guide: documentation/Learn a Language - User Guide.pdf
+### Please check the [USER GUIDE](https://github.com/alexandrahanganu/learn-a-language/blob/main/documentation/Learn%20a%20Language%20-%20User%20Guide.pdf)
 
 ## The system has two main functionalities:
 - Accepts as input raw text and uses it to learn or update a grammar.
